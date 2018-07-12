@@ -9,12 +9,21 @@
   "keywords": [
     "BuckleScript"
   ],
-  "author": "",
+  "author": "\"Don Viszneki\" <dviszneki@influential.co>",
   "license": "MIT",
   "devDependencies": {
     "bs-platform": "^3.1.5"
   },
   "dependencies": {
     "kafka-node": "^2.6.1"
-  }
+  },
+  "files": [
+    "README.md",
+    "bsconfig.json",
+    "src/Kafka_raw.bs.js",
+    "src/Kafka_raw.re",
+    "src/Kafka_util_instanceof.bs.js",
+    "src/Kafka_util_instanceof.re",
+    "src/Kafka_util_instanceof.rei"
+  ]
 }
