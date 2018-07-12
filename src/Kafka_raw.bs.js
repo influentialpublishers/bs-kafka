@@ -23,7 +23,16 @@ var Consumer = /* module */[
   /* bufferValue */bufferValue
 ];
 
+var OffsetRequest = /* module */[];
+
+var OffsetCommitRequest = /* module */[];
+
+var Offset = /* module */[];
+
 exports.Client = Client;
 exports.Producer = Producer;
 exports.Consumer = Consumer;
+exports.OffsetRequest = OffsetRequest;
+exports.OffsetCommitRequest = OffsetCommitRequest;
+exports.Offset = Offset;
 /* Kafka_util_instanceof Not a pure module */

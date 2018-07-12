@@ -173,8 +173,7 @@ module Producer = {
    TODO what types are err and data? README does not say */
   type sendCallback = (sendError, sendResultInner) => unit;
 
-  /** Send messages to kafka */ [@bs.send]
-  [@bs.send]
+  /** Send messages to kafka */ [@bs.send] [@bs.send]
   external send : (t, array(ProduceRequest.t), sendCallback) => unit = "";
   /* TODO do createTopics method */
 };
@@ -252,12 +251,12 @@ module Consumer = {
     highWaterOffset: int,
     key: Js.Nullable.t(string),
   };
-  
+
   /** obtain the 'value' property of the message if it's a buffer, otherwise
    throw an exception. to get a buffer, make sure you use encoding='buffer'
    in your consumer */
-  let bufferValue : message => Node.buffer = message =>
-    message |> value |> Kafka_util_instanceof.bufferGetExn;
+  let bufferValue: message => Node.buffer =
+    message => message |> value |> Kafka_util_instanceof.bufferGetExn;
 
   /* event handler */
   type messageHandler = message => unit;
@@ -276,7 +275,79 @@ module Consumer = {
     "";
 };
 /* KafkaClient */
+/** Provides the deriving abstract type `t` */
+module OffsetRequest = {
+  /** a structure used to describe which topics+partitions we want to operate
+   with. used by Offset.fetch */
+  [@bs.deriving abstract]
+  type t = {
+    topic: string,
+    [@bs.optional]
+    partition: int,
+    /** Used to ask for all messages before a certain time (ms), default Date.now(),
+     Specify -1 to receive the latest offsets and -2 to receive the earliest available offset.
+     */
+    [@bs.optional]
+    time: int,
+    /** default 1 */
+    [@bs.optional]
+    maxNum: int
+  };
+};
+
+module OffsetCommitRequest = {
+  /** a structured used to describe which topic+partitions we want to operate
+   * with, and what offsets we want to commit for those. used with
+   * Offset.commit */
+  [@bs.deriving abstract]
+  type t = {
+    topic: string,
+    /** default 0 */
+    [@bs.optional]
+    partition: int,
+    offset: int,
+    /** default "m" */
+    [@bs.optional]
+    metadata: string,
+  };
+};
+
 /* Offset */
+module Offset = {
+  /** a kafka offset... thing TODO */
+  type t;
+
+  /** the type of the callback you supply to fetch TODO define */
+  type fetchCallback;
+
+  /** fetch the available offset of a specific topic-partition */
+  [@bs.send] external fetch : (t, array(OffsetRequest.t), fetchCallback) => unit = "";
+
+  /** the type of the callback you supply to commit TODO define */
+  type commitCallback;
+
+  /** commit offsets to zookeeper WARNING: commits are made to zookeeper and is
+   only compatible with `HighLevelConsumer` and will NOT with the new
+   `ConsumerGroup`. arguments:
+   0: string groupId identifies the consumer group whose offsets you wish to manipulate
+   1: array of offsets you wish to commit
+   2: completion callback */
+  [@bs.send]
+  external commit :
+    (t, string, array(OffsetCommitRequest.t), commitCallback) => unit = "";
+
+  /** register event handlers */
+  [@bs.send]
+  external on :
+    (t, [@bs.string] [ | `ready(unit => unit) | `connect(unit => unit)]) =>
+    unit =
+    "";
+
+  /* TODO fetchCommits */
+  /* TODO fetchLatestOffsets */
+  /* TODO fetchEarliestOffsets */
+};
+
 /* Admin */
 /* KeyedMessage */
 /* DefaultPartitioner */
