@@ -14,5 +14,5 @@ Currently bound features:
 - [ ] [HighLevelConsumer](https://www.npmjs.com/package/kafka-node#highlevelconsumer) (deprecated)
 - [ ] [ConsumerGroup](https://www.npmjs.com/package/kafka-node#consumergroup)
 - [ ] [ConsumerGroupStream](https://www.npmjs.com/package/kafka-node#consumergroupstream)
-- [ ] [Offset](https://www.npmjs.com/package/kafka-node#offset)
+- [/] [Offset](https://www.npmjs.com/package/kafka-node#offset)
 - [ ] [Admin](https://www.npmjs.com/package/kafka-node#admin)
